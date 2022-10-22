@@ -1,0 +1,59 @@
+.bgcol {
+  background-color: #1C3879 !important;
+}
+
+.textcol {
+  color: white !important;
+  font-weight: 700 !important;
+}
+
+.link {
+  text-decoration: none;
+  color: white !important;
+}
+
+.link:hover {
+  color: white !important;
+}
+
+.Link {
+  text-decoration: none;
+  color: black !important;
+}
+
+.Link:hover {
+  color: black !important;
+}
+
+.gmap_canvas {
+  overflow: hidden;
+  background: none !important;
+  height: 31.25rem;
+  max-height: 100%;
+  width: 95%;
+  margin: auto;
+}
+
+.tablu {
+  max-height: 30rem;
+}
+
+.myspinner {
+  margin: auto;
+  margin-top: 10px;
+}
+
+.spinnercol {
+  background-color: #1f4690;
+  height: 3.5rem;
+  width: 3.5rem;
+}
+
+.myform,
+.mybtn {
+  width: 70%;
+  margin: auto;
+  border-radius: 30px;
+  text-align: center;
+  ;
+}
