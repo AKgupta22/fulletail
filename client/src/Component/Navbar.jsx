@@ -195,7 +195,7 @@ const Navbar = () => {
                             <Box sx={{ flexGrow: 0 }}>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                        <Avatar alt="User" src={user.profile ? `/public/upload/product/${user.profile}` : pic} />
+                                        <Avatar alt="User" src={user?.profile ? `/public/upload/product/${user?.profile}` : pic} />
                                     </IconButton>
                                 </Tooltip>
                                 <Menu

@@ -28,7 +28,7 @@ export default function Login() {
         e.preventDefault()
         setspinner(true)
         let item = {
-            username: login.username,
+            username: login.username.trimEnd().trimStart(),
             password: login.password
         }
         let response = await UserLogin(item)

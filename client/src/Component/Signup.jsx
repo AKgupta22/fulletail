@@ -68,7 +68,7 @@ export default function Signup() {
         if (register.password === register.cpassword) {
             let item = {
                 name: register.name,
-                username: register.username,
+                username: register.username.trimEnd().trimStart(),
                 email: register.email,
                 mobile: register.phone,
                 password: register.password
