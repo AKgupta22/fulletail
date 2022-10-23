@@ -38,6 +38,7 @@ export default function Signup() {
         let emailReg = /(.+)@(.+){2,}\.(.+){2,}/
         let nameReg = new RegExp('[a-z]{3,}')
         let phoneReg = new RegExp('[6-9]{1}[1-9]{1}[0-9]{8}')
+        let usernameReg = new RegExp('[a-zA-Z0-9]{3,10}')
         if (!Data.email)
             errors.email = "Email is required"
         else if (emailReg.test(Data.email) === false)
@@ -52,6 +53,8 @@ export default function Signup() {
             errors.phone = "Enter Valid mobile number"
         if (!Data.username)
             errors.username = "Username is required"
+        else if (usernameReg.test(Data.username) === false)
+            errors.username = "Username must only alphanumeric,no space,min 3 max 10 char"
         if (!Data.password)
             errors.password = "Password is required"
         if (!Data.cpassword)
@@ -68,7 +71,7 @@ export default function Signup() {
         if (register.password === register.cpassword) {
             let item = {
                 name: register.name,
-                username: register.username.trimEnd().trimStart(),
+                username: register.username.trimEnd(),
                 email: register.email,
                 mobile: register.phone,
                 password: register.password
