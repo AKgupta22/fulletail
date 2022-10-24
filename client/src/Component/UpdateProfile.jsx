@@ -54,8 +54,10 @@ export default function UpdateProfile() {
         formData.append('pincode', update.pincode)
         formData.append('profile', update.profile)
         let response = await updateuser(formData, user)
-        if (response.result === "Done")
+        if (response.result === "Done") {
+            localStorage.setItem("profile", response.data.profile)
             Navigate("/Profile")
+        }
         else
             alert(response.message)
 

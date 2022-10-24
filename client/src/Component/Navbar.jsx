@@ -15,9 +15,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import pic from '../asset/images/noimage.png'
 import { UserContext } from '../Store/UserContextProvider';
-const pages = ['Home', 'Shop', 'Contact'];
 const settings = ['Profile', 'Cart', 'Logout', 'LogoutAll'];
 const Navbar = () => {
+    const [pages, setpages] = useState(['Home', 'Shop', 'Contact']);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -47,6 +47,7 @@ const Navbar = () => {
         let response = await UserLogout(item)
         if (response.result === "Done") {
             localStorage.clear()
+            setpages(['Home', 'Shop', 'Contact'])
             navigate("/Login")
         }
         else
@@ -63,6 +64,7 @@ const Navbar = () => {
         let response = await UserLogoutAll(item)
         if (response.result === "Done") {
             localStorage.clear()
+            setpages(['Home', 'Shop', 'Contact'])
             navigate("/Login")
         }
         else
@@ -72,8 +74,11 @@ const Navbar = () => {
     let Getapidata = async () => {
         let response = await getOneuser()
         setuser(response.data)
+        if (response.data.role === "admin")
+            setpages(['Home', 'Shop', 'Contact', 'Admin'])
+
     }
-    const userchange = localStorage.getItem("username")
+    const userchange = localStorage.getItem("profile")
     useEffect(() => {
         if (localStorage.getItem("username"))
             Getapidata()

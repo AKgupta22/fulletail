@@ -630,7 +630,7 @@ app.put("/user/:_id", verifytoken, upload.single("profile"), async (req, res) =>
             }
 
             await Data.save()
-            res.send({ result: "Done", message: "Updated" })
+            res.send({ result: "Done", message: "Updated",data:Data })
 
         }
         else
@@ -1058,7 +1058,7 @@ app.post("/checkout", verifytoken, async (req, res) => {
 
         const Data = new Checkout(req.body)
         await Data.save()
-        res.send({ result: "Done", message: "Checkout created" })
+        res.send({ result: "Done", message: "Checkout created",data:Data })
     }
     catch (error) {
         if (error.errors.userid)

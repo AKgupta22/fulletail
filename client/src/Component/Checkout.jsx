@@ -25,6 +25,9 @@ export default function Checkout() {
     let [shipping, setshipping] = useState()
     let [final, setfinal] = useState()
     let { Addcheckout } = useContext(CheckoutContext)
+    const [isCheckout, setisCheckout] = useState(true)
+    const [isConfirmation, setisConfirmation] = useState(false)
+    let [oddetails, setoddetails] = useState({})
     let [mode, setmode] = useState("COD")
     let Getapidata = async () => {
         let response = await getOneuser()
@@ -72,17 +75,20 @@ export default function Checkout() {
         let item = {
             username: localStorage.getItem("username"),
             mode: mode,
-            checkouttotal:total,
+            checkouttotal: total,
             paymentid: "COD",
-            status: "Order Pending",
-            paymentstatus: "Pending",
+            status: "Successfully Placed",
+            paymentstatus: "Success",
             shipping: shipping,
             final: final,
             products: cart
         }
         let response = await Addcheckout(item)
-        if (response.result === "Done")
-            Navigate("/profile")
+        if (response.result === "Done") {
+            setoddetails(response.data);
+            setisCheckout(false)
+            setisConfirmation(true)
+        }
         else
             alert(response.message)
     }
@@ -91,102 +97,146 @@ export default function Checkout() {
         <>
 
             <div className="container-fluid mt-2">
+                {
+                    isCheckout === true && <Box sx={{ flexGrow: 1 }}>
+                        <Grid container spacing={2}>
+                            <Grid item md={6} xs={12}>
+                                <h5 className='bgcol text-light text-center p-2 '>Billing Details</h5>
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: "100%" }} aria-label="simple table">
+                                        <TableBody>
+                                            {rows.map((row) => (
+                                                <TableRow
+                                                    key={row.keys}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell component="th" scope="row">
+                                                        {row.keys}
+                                                    </TableCell>
+                                                    <TableCell align="left">{row.value}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                                <Link to="/updateprofile" className="btn bgcol textcol text-center w-100 btn-sm mt-1"> Update Address </Link>
 
-                <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2}>
-                        <Grid item md={6} xs={12}>
-                            <h5 className='bgcol text-light text-center p-2 '>Billing Details</h5>
-                            <TableContainer component={Paper}>
-                                <Table sx={{ minWidth: "100%" }} aria-label="simple table">
-                                    <TableBody>
-                                        {rows.map((row) => (
-                                            <TableRow
-                                                key={row.keys}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell component="th" scope="row">
-                                                    {row.keys}
-                                                </TableCell>
-                                                <TableCell align="left">{row.value}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <Link to="/updateprofile" className="btn bgcol textcol text-center w-100 btn-sm mt-1"> Update Address </Link>
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <h5 className='bgcol text-light text-center p-2 '>Cart Details</h5>
 
-                        </Grid>
-                        <Grid item md={6} xs={12}>
-                            <h5 className='bgcol text-light text-center p-2 '>Cart Details</h5>
+                                <div className="table-responsive">
+                                    {
+                                        total === 0 ? "" : <table className='table table-stripped table-hover'>
+                                            <tbody>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Name</th>
+                                                    <th>Color</th>
+                                                    <th>Size</th>
+                                                    <th>Price</th>
+                                                    <th>Qty</th>
+                                                    <th>Total</th>
 
-                            <div className="table-responsive">
+
+                                                </tr>
+
+                                                {
+                                                    cart.map((item, index) => {
+                                                        return <tr key={index}>
+                                                            <td><img src={`/public/upload/product/${item.pic1}`} alt="pic.." className="rounded" style={{ width: "40px", height: "40px" }} /></td>
+                                                            <td>{item.name}</td>
+                                                            <td>{item.color}</td>
+                                                            <td>{item.size}</td>
+                                                            <td>&#8377;{item.price}</td>
+                                                            <td>{item.qty}</td>
+                                                            <td>&#8377;{item.total}</td>
+                                                        </tr>
+                                                    })
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+
+
                                 {
-                                    total === 0 ? "" : <table className='table table-stripped table-hover'>
+                                    total === 0 ? <Link to="/Shop/All/All/All" className="btn btn-sm w-100 text-light bgcol m-2">No item in cart | Shop Now</Link> : <table className="table table-stripped table-hover">
                                         <tbody>
                                             <tr>
-                                                <th></th>
-                                                <th>Name</th>
-                                                <th>Color</th>
-                                                <th>Size</th>
-                                                <th>Price</th>
-                                                <th>Qty</th>
                                                 <th>Total</th>
-
-
+                                                <td>&#8377;{total}</td>
                                             </tr>
-
-                                            {
-                                                cart.map((item, index) => {
-                                                    return <tr key={index}>
-                                                        <td><img src={`/public/upload/product/${item.pic1}`} alt="pic.." className="rounded" style={{ width: "40px", height: "40px" }} /></td>
-                                                        <td>{item.name}</td>
-                                                        <td>{item.color}</td>
-                                                        <td>{item.size}</td>
-                                                        <td>&#8377;{item.price}</td>
-                                                        <td>{item.qty}</td>
-                                                        <td>&#8377;{item.total}</td>
-                                                    </tr>
-                                                })
-                                            }
+                                            <tr>
+                                                <th>Shipping Charge</th>
+                                                <td>&#8377;{shipping}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Net Total</th>
+                                                <td>&#8377;{final}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Mode</th>
+                                                <td>
+                                                    <select className='form-select' name="mode" onChange={modecg}>
+                                                        <option value="COD">COD</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th colSpan={2}><button onClick={placeorder} className="btn btn-sm w-100 text-light bgcol m-2">Place Order</button></th>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 }
-                            </div>
+                            </Grid>
 
-
-                            {
-                                total === 0 ? <Link to="/Shop/All/All/All" className="btn btn-sm w-100 text-light bgcol m-2">No item in cart | Shop Now</Link> : <table className="table table-stripped table-hover">
-                                    <tbody>
-                                        <tr>
-                                            <th>Total</th>
-                                            <td>&#8377;{total}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Shipping Charge</th>
-                                            <td>&#8377;{shipping}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Net Total</th>
-                                            <td>&#8377;{final}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Mode</th>
-                                            <td>
-                                                <select className='form-select' name="mode" onChange={modecg}>
-                                                    <option value="COD">COD</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th colSpan={2}><button onClick={placeorder} className="btn btn-sm w-100 text-light bgcol m-2">Place Order</button></th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            }
                         </Grid>
+                    </Box>
 
-                    </Grid>
-                </Box>
+                }
+                {
+                    isConfirmation === true &&
+                    <div className="container">
+                        <h3 className='bg-success p-2 text-light text-center mt-1 mb-2 odm'>Congrats Your Order is {oddetails?.status} </h3>
+                        <div className="table-responsive">
+                            <table className="table table-stripped table-light table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Order Id: </th>
+                                        <td>{oddetails?._id}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Order Date</th>
+                                        <td>{`${new Date(oddetails?.date).getDate()}/${new Date(oddetails?.date).getMonth()}/${new Date(oddetails?.date).getFullYear()} ${new Date(oddetails?.date).getHours()}:${new Date(oddetails?.date).getMinutes()}:${new Date(oddetails?.date).getSeconds()}`}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Mode: </th>
+                                        <td>{oddetails?.mode}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment Status: </th>
+                                        <td>{oddetails?.paymentstatus}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total: </th>
+                                        <td>&#8377;{oddetails?.checkouttotal}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Shipping Charge: </th>
+                                        <td>&#8377;{oddetails?.shipping}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Net Total: </th>
+                                        <td>&#8377;{oddetails?.final}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <Link className='btn text-light text-center bgcol w-100 odm' to="/Profile">Go to My Orders</Link>
+                    </div>
+
+                }
             </div>
 
 

@@ -38,6 +38,7 @@ export default function Login() {
             localStorage.setItem("name", response.data.name)
             localStorage.setItem("userid", response.data._id)
             localStorage.setItem("token", response.token)
+            localStorage.setItem("profile", response.profile)
             if (response.data.role === "admin") {
                 localStorage.setItem("role", response.data.role)
                 Navigate('/Admin')
@@ -54,7 +55,7 @@ export default function Login() {
 
     useEffect(() => {
         if (localStorage.getItem("username"))
-        Navigate("/Profile")
+            Navigate("/Profile")
     }, [])
     return (
         <>

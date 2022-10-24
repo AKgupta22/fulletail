@@ -57,3 +57,8 @@
   text-align: center;
   ;
 }
+.odm{
+  border: 2px solid transparent;
+  border-radius: 35px;
+
+}
