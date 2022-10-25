@@ -8,6 +8,7 @@ import { UserContext } from '../Store/UserContextProvider'
 export default function UpdateProfile() {
     const { getOneuser, updateuser } = useContext(UserContext)
     const [user, setuser] = useState({})
+    const [btn, setbtn] = useState("Update Profile")
     let Navigate = useNavigate()
     let [update, setupdate] = useState({
         name: "",
@@ -44,6 +45,7 @@ export default function UpdateProfile() {
     }
     async function PostData(e) {
         e.preventDefault()
+        setbtn("Please wait while updating...")
         let formData = new FormData()
         formData.append('name', update.name)
         formData.append('mobile', update.phone)
@@ -58,8 +60,10 @@ export default function UpdateProfile() {
             localStorage.setItem("profile", response.data.profile)
             Navigate("/Profile")
         }
-        else
+        else {
             alert(response.message)
+            setbtn("Update Profile")
+        }
 
 
     }
@@ -171,7 +175,7 @@ export default function UpdateProfile() {
                             type="file"
                             name="profile"
                         />
-                        <Button type="sumbit" variant="contained" className="bgcol textcol" onClick={PostData}>Update Now</Button>
+                        <Button type="sumbit" variant="contained" className="bgcol textcol" onClick={PostData}>{btn}</Button>
                         <Link to="/Profile" style={{ color: "black", textDecoration: "none" }}>My Account</Link>
 
                     </Box>

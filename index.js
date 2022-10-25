@@ -48,6 +48,7 @@ const Wishlist = require("./models/Wishlist")
 const Newsletters = require("./models/Newsletters")
 const Contact = require("./models/Contact")
 const Checkout = require("./models/Checkout")
+const OrderCounter = require("./models/OrderCounter")
 var schema = new passwordValidator()
 schema
     .is().min(8)                                    // Minimum length 8
@@ -74,7 +75,7 @@ const verifytokenAdmin = async (req, res, next) => {
                         next()
 
                     else
-                        res.send({ result: "Fail", message: "You are not authorized to access this page" })
+                        res.send({ result: "Fail", action: "clear", message: "You are not authorized to access this page" })
                 }
 
             })
@@ -102,7 +103,7 @@ const verifytoken = async (req, res, next) => {
             })
         }
         else
-            res.send({ result: "Fail", message: "You are cuurently logged out please login again" })
+            res.send({ result: "Fail", action: "clear", message: "You are cuurently logged out please login again" })
 
     }
     else
@@ -630,7 +631,7 @@ app.put("/user/:_id", verifytoken, upload.single("profile"), async (req, res) =>
             }
 
             await Data.save()
-            res.send({ result: "Done", message: "Updated",data:Data })
+            res.send({ result: "Done", message: "Updated", data: Data })
 
         }
         else
@@ -1055,14 +1056,29 @@ app.delete("/contact/:_id", verifytokenAdmin, async (req, res) => {
 //Post Api
 app.post("/checkout", verifytoken, async (req, res) => {
     try {
+        let SeqId
+        const Seq = await OrderCounter.findOne({ id: "autoid" })
+        if (Seq === null) {
+            const newvalue = new OrderCounter()
+            newvalue.count = 4781500071
+            SeqId = 4781500071
+            await newvalue.save()
+        }
+        else {
+            Seq.count = Seq.count + 1
+            await Seq.save()
+            SeqId = Seq.count
 
+        }
         const Data = new Checkout(req.body)
+        Data.OrderID = SeqId
         await Data.save()
-        res.send({ result: "Done", message: "Checkout created",data:Data })
+        res.send({ result: "Done", message: "Checkout created", data: Data })
     }
     catch (error) {
-        if (error.errors.userid)
-            res.status(400).send({ result: "Fail", message: error.errors.userid.message })
+        console.log(error);
+        if (error.errors.username)
+            res.status(400).send({ result: "Fail", message: error.errors.username.message })
         else if (error.errors.checkouttotal)
             res.status(400).send({ result: "Fail", message: error.errors.checkouttotal.message })
         else if (error.errors.shipping)

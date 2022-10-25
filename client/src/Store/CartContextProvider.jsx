@@ -64,6 +64,20 @@ async function deletecart(_id) {
 
     }
 }
+
+async function deletecartusername() {
+    let response = await fetch("/cartAll/" + localStorage.getItem("username"), {
+        method: "delete",
+        headers: {
+            "authorization": localStorage.getItem("token"),
+            "username": localStorage.getItem("username")
+        }
+    })
+
+    return await response.json()
+
+}
+
 export default function CartContextProvider(props) {
     return (
         <CartContext.Provider value={
@@ -72,7 +86,8 @@ export default function CartContextProvider(props) {
                 getAllcartUserid: getAllcartUserid,
                 updatecart: updatecart,
                 deletecart: deletecart,
-                getSinglecart:getSinglecart
+                deletecartusername:deletecartusername,
+                getSinglecart: getSinglecart
             }
         }>
             {props.children}

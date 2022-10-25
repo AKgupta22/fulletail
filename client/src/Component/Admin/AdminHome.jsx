@@ -8,7 +8,10 @@ export default function AdminHome() {
     let { getOneuser } = useContext(UserContext)
     let Getapidata = async () => {
         let response = await getOneuser()
-        setuser(response.data)
+        if (response.result === "Done")
+            setuser(response.data)
+        else if (response.action)
+            localStorage.clear()
     }
 
     useEffect(() => {

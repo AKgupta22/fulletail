@@ -19,7 +19,7 @@ export default function Checkout() {
     let Navigate = useNavigate()
     let { getOneuser } = useContext(UserContext)
     const [user, setuser] = useState({})
-    let { getAllcartUserid } = useContext(CartContext)
+    let { getAllcartUserid,deletecartusername } = useContext(CartContext)
     const [cart, setcart] = useState([])
     let [total, settotal] = useState()
     let [shipping, setshipping] = useState()
@@ -85,6 +85,7 @@ export default function Checkout() {
         }
         let response = await Addcheckout(item)
         if (response.result === "Done") {
+            await deletecartusername()
             setoddetails(response.data);
             setisCheckout(false)
             setisConfirmation(true)
@@ -204,7 +205,7 @@ export default function Checkout() {
                                 <tbody>
                                     <tr>
                                         <th>Order Id: </th>
-                                        <td>{oddetails?._id}</td>
+                                        <td>{oddetails?.OrderID}</td>
                                     </tr>
                                     <tr>
                                         <th>Order Date</th>

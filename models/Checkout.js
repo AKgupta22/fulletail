@@ -39,8 +39,12 @@ const CheckoutSchema = new mongoose.Schema({
     },
     tracking: {
         type: String,
-        default: ""
+        default: "Not Shipped Yet"
 
+    },
+    OrderID: {
+        type: Number,
+        default: ""
     },
     products: [
         {
@@ -90,9 +94,9 @@ const CheckoutSchema = new mongoose.Schema({
             }
         }
     ],
-    date:{
-        type:String,
-        default:new Date()
+    date: {
+        type: String,
+        default: new Date()
     }
 })
 

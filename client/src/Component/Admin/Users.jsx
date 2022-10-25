@@ -3,7 +3,7 @@ import LeftNav from './LeftNav'
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { useNavigate } from 'react-router-dom'
 export default function Users() {
-    let Navigate=useNavigate()
+    let Navigate = useNavigate()
     const [user, setuser] = useState([])
     async function deleteuser(_id) {
         if (window.confirm("Are you sure want to delete this user\n Deleted user cant't be reovered Again.")) {
@@ -76,7 +76,9 @@ export default function Users() {
                                             <th>{item.email}</th>
                                             <th>{item.role}</th>
                                             <th>{item.tokens.length}</th>
-                                            <th><button className='bgcol text-light btn btn-sm w-100' onClick={() => deleteuser(item._id)}><PersonRemoveIcon ></PersonRemoveIcon> </button></th>
+                                            {
+                                                item.role !== "admin" && <th><button className='bgcol text-light btn btn-sm w-100' onClick={() => deleteuser(item._id)}><PersonRemoveIcon ></PersonRemoveIcon> </button></th>
+                                            }
                                         </tr>
                                     })
                                 }

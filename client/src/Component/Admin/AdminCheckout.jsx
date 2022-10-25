@@ -87,7 +87,7 @@ export default function AdminCheckout() {
                                             <tr>
                                                 <th>Order no </th>
                                                 <th>Order Date </th>
-                                                <th>User id</th>
+                                                <th>User name</th>
                                                 <th>Mode</th>
                                                 <th>Order Status </th>
                                                 <th>Payment Status</th>
@@ -98,7 +98,7 @@ export default function AdminCheckout() {
                                             {
                                                 checkout?.map((item, index) => {
                                                     return <tr key={index}>
-                                                        <td>{item._id}</td>
+                                                        <td>{item.OrderID}</td>
                                                         <td>{`${new Date(item.date).getDate()}/${new Date(item.date).getMonth()}/${new Date(item.date).getFullYear()} ${new Date(item.date).getHours()}:${new Date(item.date).getMinutes()}:${new Date(item.date).getSeconds()}`}</td>
                                                         <td>{item.username}</td>
                                                         <td>{item.mode}</td>
@@ -128,7 +128,7 @@ export default function AdminCheckout() {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="ViewModalLabel">Order no {edit._id}  for User name: {edit.username}</h5>
+                            <h5 className="modal-title" id="ViewModalLabel">Order no {edit.OrderID}  for User name: {edit.username}</h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form onSubmit={PostData}>

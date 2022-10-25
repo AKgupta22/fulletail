@@ -24,7 +24,10 @@ export default function Profile() {
     const [user, setuser] = useState({})
     let Getapidata = async () => {
         let response = await getOneuser()
-        setuser(response.data)
+        if (response.result === "Done")
+            setuser(response.data)
+        else if (response.action)
+            localStorage.clear()
         let response1 = await getOneUsercheckout()
         setcheckout(response1.data)
     }
@@ -53,7 +56,7 @@ export default function Profile() {
             <Grid container spacing={2}>
 
                 <Grid item md={6} xs={12}>
-                    <img height="550px" width="100%" src={user.profile ? `/public/upload/product/${user.profile}` : pic} alt="Profile..." className="mt-1" />
+                    <img height="550px" width="100%" src={user.profile ? `/public/upload/product/${user.profile}` : pic} alt="Profile_Image..." className="mt-1" />
                 </Grid>
 
                 <Grid item md={6} xs={12}>
@@ -93,7 +96,11 @@ export default function Profile() {
                                         <tbody>
                                             <tr>
                                                 <th>Order Id: </th>
-                                                <td>{item._id}</td>
+                                                <td>{item.OrderID}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Order Date</th>
+                                                <td>{`${new Date(item.date).getDate()}/${new Date(item.date).getMonth()}/${new Date(item.date).getFullYear()} ${new Date(item.date).getHours()}:${new Date(item.date).getMinutes()}:${new Date(item.date).getSeconds()}`}</td>
                                             </tr>
                                             <tr>
                                                 <th>Mode: </th>
@@ -120,10 +127,18 @@ export default function Profile() {
                                                 <th>Net Total: </th>
                                                 <td>&#8377;{item.final}</td>
                                             </tr>
-                                            <tr>
-                                                <th>Order Date</th>
-                                                <td>{`${new Date(item.date).getDate()}/${new Date(item.date).getMonth()}/${new Date(item.date).getFullYear()} ${new Date(item.date).getHours()}:${new Date(item.date).getMinutes()}:${new Date(item.date).getSeconds()}`}</td>
-                                            </tr>
+                                            {
+                                                item.courier !== "Not Shipped Yet" && <tr>
+                                                    <th>Delivery Partner: </th>
+                                                    <td>{item.courier}</td>
+                                                </tr>
+                                            }
+                                            {
+                                                item.courier !== "Not Shipped Yet" && <tr>
+                                                    <th>Tracking no: </th>
+                                                    <td>{item.tracking}</td>
+                                                </tr>
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
