@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Grid'
 import { Link, useNavigate } from 'react-router-dom'
+import CartSpinner from './CartSpinner';
 export default function Cart() {
     let Navigate = useNavigate()
     let { getAllcartUserid, updatecart, deletecart, getSinglecart } = useContext(CartContext)
@@ -12,6 +13,8 @@ export default function Cart() {
     let [total, settotal] = useState()
     let [shipping, setshipping] = useState()
     let [final, setfinal] = useState()
+    const [decspin, setdecpin] = useState(false)
+    const [incspin, setincpin] = useState(false)
     const GetApiData = async () => {
         let response = await getAllcartUserid()
         setcart(response.data)
@@ -42,22 +45,28 @@ export default function Cart() {
         if (op === "DEC" && singlecart.qty === 1)
             return
         else if (op === "DEC") {
-
+            setdecpin(true)
             singlecart.qty = singlecart.qty - 1
             singlecart.total = singlecart.total - singlecart.price
         }
         else {
-
+            setincpin(true)
             singlecart.qty = singlecart.qty + 1
             singlecart.total = singlecart.total + singlecart.price
         }
 
         response = await updatecart(singlecart)
-        if (response.result === "Done") 
+        if (response.result === "Done") {
+            setdecpin(false)
+            setincpin(false)
             GetApiData()
-        
-        else
+        }
+
+        else {
+            setdecpin(false)
+            setincpin(false)
             alert(response.message)
+        }
 
     }
     const deleteCartSingle = async (_id) => {
@@ -99,9 +108,9 @@ export default function Cart() {
                                             <td>{item.color}</td>
                                             <td>{item.size}</td>
                                             <td>&#8377;{item.price}</td>
-                                            <td><RemoveIcon onClick={() => Update(item._id, "DEC")}></RemoveIcon></td>
+                                            <td>{decspin === false ? <RemoveIcon onClick={() => Update(item._id, "DEC")}></RemoveIcon> : <CartSpinner />}</td>
                                             <td>{item.qty}</td>
-                                            <td><AddIcon onClick={() => Update(item._id, "INC")}></AddIcon ></td>
+                                            <td>{incspin === false ? <AddIcon onClick={() => Update(item._id, "INC")}></AddIcon > : <CartSpinner />}</td>
                                             <td>&#8377;{item.total}</td>
                                             <td><DeleteIcon onClick={() => deleteCartSingle(item._id)}></DeleteIcon></td>
                                         </tr>

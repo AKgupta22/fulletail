@@ -88,7 +88,7 @@ export default function Profile() {
             <h5 className="bgcol text-light text-center p-2 mt-1">Order History</h5>
             <div className="container-fluid mt-1">
                 {
-                    checkout.map((item, index) => {
+                    checkout?.map((item, index) => {
                         return <div key={index} className="row">
                             <div className='col-md-4 col-sm-6 col-12'>
                                 <div className="table-responsive">

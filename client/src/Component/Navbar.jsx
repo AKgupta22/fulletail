@@ -73,8 +73,11 @@ const Navbar = () => {
 
     let Getapidata = async () => {
         let response = await getOneuser()
-        setuser(response.data)
-        if (response.data.role === "admin")
+        if (response.result === "Done")
+            setuser(response.data)
+        else if (response.action)
+            localStorage.clear()
+        if (response?.data?.role === "admin")
             setpages(['Home', 'Shop', 'Contact', 'Admin'])
 
     }

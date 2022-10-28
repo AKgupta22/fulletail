@@ -30,72 +30,83 @@ export default function Singlepage() {
     ]
 
     async function AddToCart() {
-
         let response = await getAllcartUserid()
         if (response.result === "Fail")
             Navigate("/Login")
-        if (response.data.find((item) => item.username === localStorage.getItem("username") && item.productid === _id) === undefined) {
+        else {
+            const cartbtn = document.getElementById("addcart")
+            cartbtn.innerHTML = "Adding to cart..."
+            if (response.data.find((item) => item.username === localStorage.getItem("username") && item.productid === _id) === undefined) {
 
-            let item = {
-                username: localStorage.getItem("username"),
-                productid: product._id,
-                name: product.name,
-                color: product.color,
-                size: product.size,
-                maincategory: product.maincategory,
-                subcategory: product.subcategory,
-                brand: product.brand,
-                price: product.finalprice,
-                total: product.finalprice * 1,
-                qty: 1,
-                pic1: product.pic1,
+                let item = {
+                    username: localStorage.getItem("username"),
+                    productid: product._id,
+                    name: product.name,
+                    color: product.color,
+                    size: product.size,
+                    maincategory: product.maincategory,
+                    subcategory: product.subcategory,
+                    brand: product.brand,
+                    price: product.finalprice,
+                    total: product.finalprice * 1,
+                    qty: 1,
+                    pic1: product.pic1,
 
 
-            }
+                }
 
-            response = await Addcart(item)
-            if (response.result === "Done") {
-                Navigate('/cart')
-                localStorage.setItem("cartqty", "added")
+                response = await Addcart(item)
+                if (response.result === "Done") {
+                    Navigate('/cart')
+                }
+                else {
+                    alert(response.message)
+                    cartbtn.innerHTML = "Failed Retry!!"
+                }
+
             }
             else
-                alert(response.message)
-
+                Navigate('/cart')
         }
-        else
-            Navigate('/cart')
     }
     async function AddToWishlist() {
 
         let response = await getAllwishlist()
         if (response.result === "Fail")
             Navigate("/Login")
-        if (response.data.find((item) => item.username === localStorage.getItem("username") && item.productid === _id) === undefined) {
+        else {
+            const wishlistbtn = document.getElementById("addwishlist")
+            wishlistbtn.innerHTML = "Adding to wishlist..."
+            if (response.data.find((item) => item.username === localStorage.getItem("username") && item.productid === _id) === undefined) {
 
-            let item = {
-                username: localStorage.getItem("username"),
-                productid: product._id,
-                name: product.name,
-                color: product.color,
-                size: product.size,
-                maincategory: product.maincategory,
-                subcategory: product.subcategory,
-                brand: product.brand,
-                price: product.baseprice,
-                pic1: product.pic1,
+                let item = {
+                    username: localStorage.getItem("username"),
+                    productid: product._id,
+                    name: product.name,
+                    color: product.color,
+                    size: product.size,
+                    maincategory: product.maincategory,
+                    subcategory: product.subcategory,
+                    brand: product.brand,
+                    price: product.baseprice,
+                    pic1: product.pic1,
 
+
+                }
+
+                response = await Addwishlist(item)
+                if (response.result === "Done")
+                    Navigate('/wishlist')
+                else {
+                    wishlistbtn.innerHTML = "Failed Retry..."
+                    alert(response.message)
+                }
 
             }
-
-            response = await Addwishlist(item)
-            if (response.result === "Done")
-                Navigate('/wishlist')
             else
-                alert(response.message)
+                Navigate('/wishlist')
 
         }
-        else
-            Navigate('/wishlist')
 
     }
     let getApiData = async () => {
@@ -226,8 +237,8 @@ export default function Singlepage() {
 
                             </div>
                             <div className="d-flex justify-content-between">
-                                <button style={{ width: "49%" }} className="btn bgcol textcol text-center btn-sm mt-1" onClick={AddToCart}> Add to Cart</button>
-                                <button className="btn bgcol textcol text-center btn-sm mt-1" style={{ width: "49%" }} onClick={AddToWishlist} > Add to Wishlist</button>
+                                <button style={{ width: "49%" }} id="addcart" className="btn bgcol textcol text-center btn-sm mt-1" onClick={AddToCart}> Add to Cart</button>
+                                <button id="addwishlist" className="btn bgcol textcol text-center btn-sm mt-1" style={{ width: "49%" }} onClick={AddToWishlist} > Add to Wishlist</button>
                             </div>
                         </Grid>
                     </Grid>

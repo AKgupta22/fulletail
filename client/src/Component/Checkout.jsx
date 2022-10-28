@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { CartContext } from '../Store/CartContextProvider'
 import { CheckoutContext } from '../Store/CheckoutContextProvider'
 import { UserContext } from '../Store/UserContextProvider'
+import CartSpinner from './CartSpinner'
 function createData(keys, value) {
     return { keys, value };
 }
@@ -19,7 +20,7 @@ export default function Checkout() {
     let Navigate = useNavigate()
     let { getOneuser } = useContext(UserContext)
     const [user, setuser] = useState({})
-    let { getAllcartUserid,deletecartusername } = useContext(CartContext)
+    let { getAllcartUserid, deletecartusername } = useContext(CartContext)
     const [cart, setcart] = useState([])
     let [total, settotal] = useState()
     let [shipping, setshipping] = useState()
@@ -29,6 +30,7 @@ export default function Checkout() {
     const [isConfirmation, setisConfirmation] = useState(false)
     let [oddetails, setoddetails] = useState({})
     let [mode, setmode] = useState("COD")
+    const [checkoutbtn, setcheckoutbtn] = useState(true)
     let Getapidata = async () => {
         let response = await getOneuser()
         setuser(response.data)
@@ -72,6 +74,7 @@ export default function Checkout() {
         setmode(e.target.value)
     }
     async function placeorder() {
+        setcheckoutbtn(false)
         let item = {
             username: localStorage.getItem("username"),
             mode: mode,
@@ -90,8 +93,10 @@ export default function Checkout() {
             setisCheckout(false)
             setisConfirmation(true)
         }
-        else
+        else {
+            setcheckoutbtn(true)
             alert(response.message)
+        }
     }
 
     return (
@@ -185,7 +190,7 @@ export default function Checkout() {
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th colSpan={2}><button onClick={placeorder} className="btn btn-sm w-100 text-light bgcol m-2">Place Order</button></th>
+                                                <th colSpan={2}><button onClick={placeorder} className="btn btn-sm w-100 text-light bgcol m-2">{checkoutbtn === true ? 'Place Order' : <CartSpinner />}</button></th>
                                             </tr>
                                         </tbody>
                                     </table>
