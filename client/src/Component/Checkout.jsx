@@ -68,11 +68,8 @@ export default function Checkout() {
         createData('City', user.city),
         createData('State', user.state),
         createData('Pincode', user.pincode)
-    ];
+    ]
 
-    function modecg(e) {
-        setmode(e.target.value)
-    }
     async function placeorder() {
         setcheckoutbtn(false)
         let item = {
@@ -99,6 +96,10 @@ export default function Checkout() {
         }
     }
 
+    const PlaceOnline = async () => {
+        
+        alert(mode)
+    }
     return (
         <>
 
@@ -184,13 +185,14 @@ export default function Checkout() {
                                             <tr>
                                                 <th>Mode</th>
                                                 <td>
-                                                    <select className='form-select' name="mode" onChange={modecg}>
+                                                    <select className='form-select' name="mode" onChange={(e) => setmode(e.target.value)}>
                                                         <option value="COD">COD</option>
+                                                        <option value="Coming Soon">Razorpay</option>
                                                     </select>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th colSpan={2}><button onClick={placeorder} className="btn btn-sm w-100 text-light bgcol m-2">{checkoutbtn === true ? 'Place Order' : <CartSpinner />}</button></th>
+                                                <th colSpan={2}><button onClick={mode === "COD" ? placeorder : PlaceOnline} className="btn btn-sm w-100 text-light bgcol m-2">{checkoutbtn === true ? 'Place Order' : <CartSpinner />}</button></th>
                                             </tr>
                                         </tbody>
                                     </table>

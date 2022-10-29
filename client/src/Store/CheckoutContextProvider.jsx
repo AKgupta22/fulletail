@@ -25,7 +25,7 @@ async function getAllcheckout() {
 }
 
 async function getOnecheckout(_id) {
-    let response = await fetch("/checkout/"+_id, {
+    let response = await fetch("/checkout/" + _id, {
         headers: {
             "authorization": localStorage.getItem("token"),
             "username": localStorage.getItem("username")
@@ -36,7 +36,7 @@ async function getOnecheckout(_id) {
 }
 
 async function getOneUsercheckout() {
-    let response = await fetch("/checkoutuser/"+localStorage.getItem("username"), {
+    let response = await fetch("/checkoutuser/" + localStorage.getItem("username"), {
         headers: {
             "authorization": localStorage.getItem("token"),
             "username": localStorage.getItem("username")
@@ -46,11 +46,11 @@ async function getOneUsercheckout() {
     return await response.json()
 }
 
-async function updatecheckout(item,_id) {
+async function updatecheckout(item, _id) {
     let response = await fetch("/checkout/" + _id, {
         method: "put",
         headers: {
-            "content-type":"application/json",
+            "content-type": "application/json",
             "authorization": localStorage.getItem("token"),
             "username": localStorage.getItem("username")
 
@@ -60,19 +60,34 @@ async function updatecheckout(item,_id) {
     return await response.json()
 }
 
+async function deletecheckout(id) {
+    if (window.confirm("Are you sure want to delete this order")) {
+        let response = await fetch("/checkout/" + id, {
+            method: "delete",
+            headers: {
+                "authorization": localStorage.getItem("token"),
+                "username": localStorage.getItem("username")
 
-    export default function CheckoutContextProvider(props) {
-        return (
-            <CheckoutContext.Provider value={
-                {
-                    Addcheckout: Addcheckout,
-                    getAllcheckout: getAllcheckout,
-                    updatecheckout: updatecheckout,
-                    getOnecheckout:getOnecheckout,
-                    getOneUsercheckout:getOneUsercheckout
-                }
-            }>
-                {props.children}
-            </CheckoutContext.Provider>
-        )
+            }
+        })
+        return await response.json()
     }
+}
+
+
+export default function CheckoutContextProvider(props) {
+    return (
+        <CheckoutContext.Provider value={
+            {
+                Addcheckout: Addcheckout,
+                getAllcheckout: getAllcheckout,
+                updatecheckout: updatecheckout,
+                getOnecheckout: getOnecheckout,
+                getOneUsercheckout: getOneUsercheckout,
+                deletecheckout: deletecheckout
+            }
+        }>
+            {props.children}
+        </CheckoutContext.Provider>
+    )
+}

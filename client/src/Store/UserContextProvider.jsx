@@ -52,8 +52,8 @@ async function getOneuser() {
     return await response.json()
 }
 
-async function updateuser(formData,user) {
-    let response = await fetch("/user/"+user._id, {
+async function updateuser(formData, user) {
+    let response = await fetch("/user/" + user._id, {
         method: "put",
         headers: {
             "authorization": localStorage.getItem("token"),
@@ -69,7 +69,7 @@ async function updatpassword(item) {
     let response = await fetch("/update-password", {
         method: "put",
         headers: {
-            "content-type":"application/json",
+            "content-type": "application/json",
             "authorization": localStorage.getItem("token"),
             "username": localStorage.getItem("username")
 
@@ -86,8 +86,9 @@ async function UserLogout(item) {
         method: "post",
         headers: {
 
-            "content-type": "application/json"
-
+            "content-type": "application/json",
+            "authorization": localStorage.getItem("token"),
+            "username": localStorage.getItem("username")
         },
         body: JSON.stringify(item)
     })
@@ -102,7 +103,9 @@ async function UserLogoutAll(item) {
         method: "post",
         headers: {
 
-            "content-type": "application/json"
+            "content-type": "application/json",
+            "authorization": localStorage.getItem("token"),
+            "username": localStorage.getItem("username")
 
         },
         body: JSON.stringify(item)
@@ -134,10 +137,10 @@ export default function UserContextContext(props) {
                 UserLogoutAll: UserLogoutAll,
                 UserLogout: UserLogout,
                 getAlluser: getAlluser,
-                getOneuser:getOneuser,
+                getOneuser: getOneuser,
                 updateuser: updateuser,
                 deleteuser: deleteuser,
-                updatpassword:updatpassword
+                updatpassword: updatpassword
             }
         }>
             {props.children}

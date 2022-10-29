@@ -22,11 +22,11 @@ export default function AdminUpdateProduct() {
         size: "",
         brand: "",
         maincategory: "",
-        sc: "",
+        subcategory: "",
         baseprice: "",
         finalprice: "",
         discount: "",
-        description: "",
+        discription: "",
         stock: "",
         pic1: "",
         pic2: "",
@@ -61,15 +61,15 @@ export default function AdminUpdateProduct() {
         newdata.finalprice = parseInt(newdata.baseprice - newdata.baseprice * newdata.discount / 100)
         let formData = new FormData()
         formData.append('name', newdata.name)
-        formData.append('maincategory', newdata.mc)
-        formData.append('subcategory', newdata.sc)
+        formData.append('maincategory', newdata.maincategory)
+        formData.append('subcategory', newdata.subcategory)
         formData.append('brand', newdata.brand)
         formData.append('color', newdata.color)
         formData.append('size', newdata.size)
         formData.append('baseprice', newdata.baseprice)
         formData.append('finalprice', newdata.finalprice)
         formData.append('discount', newdata.discount)
-        formData.append('discription', newdata.description)
+        formData.append('discription', newdata.discription)
         formData.append('stock', newdata.stock)
         formData.append('pic1', newdata.pic1)
         formData.append('pic2', newdata.pic2)
@@ -85,6 +85,7 @@ export default function AdminUpdateProduct() {
     let getApiData = async () => {
         let response = await getOneproduct(_id)
         setproduct(response.data)
+        setnewdata(response.data)
         response = await getAllmaincategory()
         setmaincategory(response.data)
         response = await getAllsubcategory()
@@ -124,8 +125,8 @@ export default function AdminUpdateProduct() {
                         <div className="row">
                             <div className="col-md-3 col-sm-6 col-12">
                                 <label className="form-label">New Size</label>
-                                <select name="size" value={newdata.size} className='form-select' onChange={Getdata}>
-                                    <option value="" defaultChecked>Select</option>
+                                <select name="size" className='form-select' value={newdata.size} onChange={Getdata}>
+                                    <option value="S">S</option>
                                     <option value="M">M</option>
                                     <option value="L">L</option>
                                     <option value="XL">XL</option>
@@ -135,7 +136,6 @@ export default function AdminUpdateProduct() {
                             <div className="col-md-3 col-sm-6 col-12">
                                 <label className="form-label">New Brand</label>
                                 <select name="brand" value={newdata.brand} className='form-select' onChange={Getdata}>
-                                    <option value="" defaultChecked>Select</option>
                                     {
                                         brand.map((item, i) => {
                                             return <option key={i} value={item.name}>{item.name}</option>
@@ -145,8 +145,7 @@ export default function AdminUpdateProduct() {
                             </div>
                             <div className="col-md-3 col-sm-6 col-12">
                                 <label className="form-label">New MainCategory *</label>
-                                <select name="mc" className='form-select' required onChange={Getdata} value={product.maincategory} >
-                                    <option value="" defaultChecked >Select</option>
+                                <select name="maincategory" className='form-select' value={newdata.maincategory} required onChange={Getdata} >
                                     {
                                         maincategory.map((item, i) => {
                                             return <option key={i} value={item.name}>{item.name}</option>
@@ -156,8 +155,7 @@ export default function AdminUpdateProduct() {
                             </div>
                             <div className="col-md-3 col-sm-6 col-12">
                                 <label className="form-label">New Sub Category</label>
-                                <select name="sc" value={newdata.sc} className='form-select' onChange={Getdata}>
-                                    <option value="" defaultChecked>Select</option>
+                                <select name="subcategory" value={newdata.subcategory} className='form-select' onChange={Getdata}>
                                     {
                                         subcategory.map((item, i) => {
                                             return <option key={i} value={item.name}>{item.name}</option>
@@ -182,13 +180,12 @@ export default function AdminUpdateProduct() {
                         </div>
                         <div >
                             <label className="form-label">New Description</label>
-                            <textarea style={{ resize: "none" }} type="textarea" rows={6} className="form-control" value={newdata.description} onChange={Getdata} name="description" >
+                            <textarea style={{ resize: "none" }} type="textarea" rows={6} className="form-control" value={newdata.discription} onChange={Getdata} name="discription" >
                             </textarea>
                         </div>
                         <div className="mb-1">
                             <label className="form-label">In Stock</label>
                             <select name="stock" value={newdata.stock} className='form-select' onChange={Getdata}>
-                                <option value="" defaultChecked>Select</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>

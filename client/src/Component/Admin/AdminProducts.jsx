@@ -63,7 +63,7 @@ export default function AdminProducts() {
                                         return <tr key={index}>
                                             <td>{item._id}</td>
                                             <td><img src={`/public/upload/product/${item.pic1}`} alt="pic.." className="rounded" style={{ width: "40px", height: "40px" }} /></td>
-                                            <td><img src={`/public/upload/product/${item.pic1}`} alt="pic.." className="rounded" style={{ width: "40px", height: "40px" }} /></td>
+                                            <td><img src={`/public/upload/product/${item.pic2}`} alt="pic.." className="rounded" style={{ width: "40px", height: "40px" }} /></td>
                                             <td><img src={`/public/upload/product/${item.pic3}`} alt="pic.." className="rounded" style={{ width: "40px", height: "40px" }} /></td>
                                             <td><img src={`/public/upload/product/${item.pic4}`} alt="pic.." className="rounded" style={{ width: "40px", height: "40px" }} /></td>
                                             <td>{item.name}</td>

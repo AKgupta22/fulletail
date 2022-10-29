@@ -3,9 +3,10 @@ import LeftNav from './LeftNav'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import { CheckoutContext } from '../../Store/CheckoutContextProvider';
 import { Link, useNavigate } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete'
 export default function AdminCheckout() {
     let Navigate = useNavigate()
-    let { getAllcheckout, updatecheckout } = useContext(CheckoutContext)
+    let { getAllcheckout, updatecheckout, deletecheckout } = useContext(CheckoutContext)
     let [checkout, setcheckout] = useState([])
     let [edit, setedit] = useState("")
     let [status, setstatus] = useState({
@@ -59,13 +60,21 @@ export default function AdminCheckout() {
             alert(response.message)
 
     }
+
+    const deleteCheckoutOne = async (id) => {
+        let response = await deletecheckout(id)
+        if (response.result === "Done")
+            GetApiData()
+        else
+            alert(response.message)
+    }
     const GetApiData = async () => {
         let response = await getAllcheckout()
         setcheckout(response.data)
 
     }
     useEffect(() => {
-        if (localStorage.getItem("username") && localStorage.getItem("role")==="admin")
+        if (localStorage.getItem("username") && localStorage.getItem("role") === "admin")
             GetApiData()
         else
             Navigate("/")
@@ -105,7 +114,10 @@ export default function AdminCheckout() {
                                                         <td>{item.status}</td>
                                                         <td>{item.paymentstatus}</td>
                                                         <td>{item.final}</td>
+
                                                         <td><button className='bgcol text-light btn btn-sm w-100' type="button" data-bs-toggle="modal" data-bs-target="#ViewModal" onClick={() => edited(item)}><RemoveRedEyeIcon /></button></td>
+
+                                                        <td><button className='bgcol text-light btn btn-sm w-100' onClick={() => deleteCheckoutOne(item._id)}><DeleteIcon ></DeleteIcon> </button></td>
                                                     </tr>
                                                 })
                                             }
