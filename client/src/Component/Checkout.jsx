@@ -169,9 +169,9 @@ export default function Checkout() {
             const rawdata = await fetch(orderUrl, {
                 method: "post",
                 headers: {
-                    "Content-Type": "application/json",
-                    authorization: localStorage.getItem("token"),
-                    username: localStorage.getItem("username")
+                    "content-type": "application/json",
+                    "authorization": localStorage.getItem("token"),
+                    "username": localStorage.getItem("username")
                 },
                 body: JSON.stringify({ amount: checkdata.final })
             });
