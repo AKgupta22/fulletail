@@ -29,7 +29,7 @@ export default function Profile() {
         else if (response.action)
             localStorage.clear()
         let response1 = await getOneUsercheckout()
-        setcheckout(response1.data)
+        setcheckout(response1.data.filter((item) => item.paymentstatus === "Success"))
     }
 
     useEffect(() => {
@@ -115,6 +115,12 @@ export default function Profile() {
                                                 <th>Payment Status: </th>
                                                 <td>{item.paymentstatus}</td>
                                             </tr>
+                                            {
+                                                item.paymentid !== "Cash" && <tr>
+                                                    <th>Txn Id: </th>
+                                                    <td>{item.paymentid}</td>
+                                                </tr>
+                                            }
                                             <tr>
                                                 <th>Total: </th>
                                                 <td>&#8377;{item.checkouttotal}</td>
@@ -139,6 +145,7 @@ export default function Profile() {
                                                     <td>{item.tracking}</td>
                                                 </tr>
                                             }
+
                                         </tbody>
                                     </table>
                                 </div>

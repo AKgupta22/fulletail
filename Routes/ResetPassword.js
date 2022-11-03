@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const MailSender = require('../MailHandler/SendMail')
+const SMSHandle = require('../SMSHandler/SMS')
 const passwordValidator = require("password-validator")
 var schema = new passwordValidator()
 schema
@@ -20,9 +21,10 @@ module.exports = function (app, User) {
                 let MailOption = {
                     to: req.body.email,
                     subject: `OTP For Password Reset !!!Team Etail`,
-                    text: `Dear ${Data.name}\nYour password rest otp is ${otp} !!\nRegards Etail Team`
+                    text: `Dear ${Data.name}\nYour password rest otp is ${otp} !!\nRegards Etail Team\n`
                 }
                 MailSender(MailOption)
+                SMSHandle(MailOption)
                 Data.OTP = otp
                 await Data.save()
                 res.send({ result: "Done", message: "otp sent" })

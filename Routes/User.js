@@ -5,6 +5,7 @@ const fs = require("fs")
 const bcrypt = require('bcrypt')
 const passwordValidator = require("password-validator")
 const MailSender = require('../MailHandler/SendMail')
+const SMSHandle = require('../SMSHandler/SMS')
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/upload/product')
@@ -27,7 +28,7 @@ schema
     .has().not().spaces()                           // Should not have spaces
     .is().not().oneOf(['Password@123', 'Password123']); // Blacklist these values
 
-module.exports = function (app,User) {
+module.exports = function (app, User) {
     app.post("/user", async (req, res) => {
         try {
             const Data = new User(req.body)
@@ -41,9 +42,10 @@ module.exports = function (app,User) {
                             let MailOption = {
                                 to: req.body.email,
                                 subject: 'Account created on Etail App',
-                                text: `Dear ${req.body.name}\nYour account on etail app has been created with\nUsername: ${req.body.username}\nPassword: ${req.body.password}\nRegards Etail Team`
+                                text: `Dear ${req.body.name}\nYour account on etail app has been created with\nUsername: ${req.body.username}\nPassword: ${req.body.password}\nRegards Etail Team\n`
                             }
                             MailSender(MailOption)
+                            SMSHandle(MailOption)
                         })
                     }
                     else

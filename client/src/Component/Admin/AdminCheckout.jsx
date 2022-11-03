@@ -100,6 +100,7 @@ export default function AdminCheckout() {
                                                 <th>Mode</th>
                                                 <th>Order Status </th>
                                                 <th>Payment Status</th>
+                                                <th>Txn Id: </th>
                                                 <th>Total Amount </th>
                                                 <th></th>
                                                 <th></th>
@@ -113,6 +114,7 @@ export default function AdminCheckout() {
                                                         <td>{item.mode}</td>
                                                         <td>{item.status}</td>
                                                         <td>{item.paymentstatus}</td>
+                                                        <td>{item.paymentid}</td>
                                                         <td>{item.final}</td>
 
                                                         <td><button className='bgcol text-light btn btn-sm w-100' type="button" data-bs-toggle="modal" data-bs-target="#ViewModal" onClick={() => edited(item)}><RemoveRedEyeIcon /></button></td>

@@ -7,6 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import useRazorpay from "react-razorpay";
 import { Link, useNavigate } from 'react-router-dom'
 import { CartContext } from '../Store/CartContextProvider'
 import { CheckoutContext } from '../Store/CheckoutContextProvider'
@@ -18,6 +19,7 @@ function createData(keys, value) {
 
 export default function Checkout() {
     let Navigate = useNavigate()
+    const Razorpay = useRazorpay();
     let { getOneuser } = useContext(UserContext)
     const [user, setuser] = useState({})
     let { getAllcartUserid, deletecartusername } = useContext(CartContext)
@@ -85,7 +87,6 @@ export default function Checkout() {
         }
         let response = await Addcheckout(item)
         if (response.result === "Done") {
-            await deletecartusername()
             setoddetails(response.data);
             setisCheckout(false)
             setisConfirmation(true)
@@ -97,9 +98,89 @@ export default function Checkout() {
     }
 
     const PlaceOnline = async () => {
-        
-        alert(mode)
+        let item = {
+            username: localStorage.getItem("username"),
+            mode: mode,
+            checkouttotal: total,
+            paymentid: "Razorpay",
+            status: "Successfully Placed",
+            paymentstatus: "Pending",
+            shipping: shipping,
+            final: final,
+            products: cart
+        }
+        let response = await Addcheckout(item)
+        if (response.result === "Done")
+            handlePayment(response.data)
+        else
+            alert(response.message)
+
     }
+
+    const initPayment = (data, orderid) => {
+        const options = {
+            key: "rzp_test_UoKI6ohFwbTdzO",
+            amount: data.amount,
+            currency: "INR",
+            order_id: data._id,
+            "prefill": {
+                "name": user.name,
+                "email": user.email,
+                "contact": user.mobile,
+            },
+            handler: async (response) => {
+                try {
+                    let item = {
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        checkid: orderid
+                    }
+                    let rawdata = await fetch("/verify", {
+                        method: "put",
+                        headers: {
+                            "content-type": "application/json",
+                            "authorization": localStorage.getItem("token"),
+                            "username": localStorage.getItem("username")
+                        },
+                        body: JSON.stringify(item)
+                    });
+                    let result = await rawdata.json()
+                    if (result.result === "Done") {
+                        await deletecartusername()
+                        setoddetails(result.data);
+                        setisCheckout(false)
+                        setisConfirmation(true)
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            theme: {
+                color: "#3399cc",
+            },
+        };
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+    };
+
+
+    const handlePayment = async (checkdata) => {
+        try {
+            const orderUrl = "/orders";
+            const rawdata = await fetch(orderUrl, {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    authorization: localStorage.getItem("token"),
+                    username: localStorage.getItem("username")
+                },
+                body: JSON.stringify({ amount: checkdata.final })
+            });
+            let data = await rawdata.json()
+            initPayment(data.data, checkdata._id);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <>
 
@@ -187,7 +268,7 @@ export default function Checkout() {
                                                 <td>
                                                     <select className='form-select' name="mode" onChange={(e) => setmode(e.target.value)}>
                                                         <option value="COD">COD</option>
-                                                        <option value="Coming Soon">Razorpay</option>
+                                                        <option value="Razorpay">Razorpay</option>
                                                     </select>
                                                 </td>
                                             </tr>

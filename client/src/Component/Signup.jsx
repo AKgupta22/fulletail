@@ -36,7 +36,6 @@ export default function Signup() {
     const Validate = (Data) => {
         let errors = {}
         let emailReg = /(.+)@(.+){2,}\.(.+){2,}/
-        let nameReg = new RegExp('[a-z]{3,}')
         let phoneReg = new RegExp('[6-9]{1}[1-9]{1}[0-9]{8}')
         let usernameReg = /^\S*$/
         if (!Data.email)
@@ -45,8 +44,6 @@ export default function Signup() {
             errors.email = "Enter Valid Email Address"
         if (!Data.name)
             errors.name = "name is required"
-        else if (nameReg.test(Data.name) === false)
-            errors.name = "Enter valid name"
         if (!Data.phone)
             errors.phone = "Mobile no is required"
         else if (phoneReg.test(Data.phone) === false)
