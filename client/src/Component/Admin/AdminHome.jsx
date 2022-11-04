@@ -53,7 +53,7 @@ export default function AdminHome() {
                                         </tr>
                                         <tr>
                                             <th>Email</th>
-                                            <td>ag565609@gmail.com</td>
+                                            <td>{user.email}</td>
                                         </tr>
                                         <tr>
                                             <th>Role</th>
