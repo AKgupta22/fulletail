@@ -87,6 +87,7 @@ export default function Checkout() {
         }
         let response = await Addcheckout(item)
         if (response.result === "Done") {
+            await deletecartusername()
             setoddetails(response.data);
             setisCheckout(false)
             setisConfirmation(true)
@@ -98,6 +99,7 @@ export default function Checkout() {
     }
 
     const PlaceOnline = async () => {
+        setcheckoutbtn(false)
         let item = {
             username: localStorage.getItem("username"),
             mode: mode,
@@ -110,10 +112,14 @@ export default function Checkout() {
             products: cart
         }
         let response = await Addcheckout(item)
-        if (response.result === "Done")
+        if (response.result === "Done") {
+            setcheckoutbtn(true)
             handlePayment(response.data)
-        else
+        }
+        else {
+            setcheckoutbtn(true)
             alert(response.message)
+        }
 
     }
 
