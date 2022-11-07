@@ -58,7 +58,7 @@ export default function UpdateProfile() {
         let response = await updateuser(formData, user)
         if (response.result === "Done") {
             localStorage.setItem("profile", response.data.profile)
-            Navigate("/Profile")
+            window.history.back()
         }
         else {
             alert(response.message)

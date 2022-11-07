@@ -31,6 +31,7 @@ import AdminNewsLetters from './Admin/AdminNewsLetters'
 import AdminContact from './Admin/AdminContact'
 import Search from './Search'
 import UpdatePassword from './UpdatePassword'
+import Error404 from './Error404'
 export default function App() {
 
     return (
@@ -52,7 +53,7 @@ export default function App() {
                     <Route path="/wishlist" element={<Wishlist />} />
                     <Route path="/updateprofile" element={<UpdateProfile />} />
                     <Route path="/updatepassword" element={<UpdatePassword/>} />
-                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/checkout-order" element={<Checkout />} />
                     <Route path="/Admin" element={<AdminHome />} />
                     <Route path="/admin-users" element={<Users />} />
                     <Route path="/admin-mc" element={<AdminMainCategory />} />
@@ -68,7 +69,7 @@ export default function App() {
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/admin-newsletters" element={<AdminNewsLetters />} />
                     <Route path="/admin-contact" element={<AdminContact />} />
-                    <Route path="*" element={<Home />} />
+                    <Route path="*" element={<Error404/>} />
 
 
                 </Routes>

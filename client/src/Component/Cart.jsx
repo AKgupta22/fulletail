@@ -141,7 +141,7 @@ export default function Cart() {
                                         <td>&#8377;{final}</td>
                                     </tr>
                                     <tr>
-                                        <th colSpan={2}><Link to="/checkout" className="btn btn-sm w-100 text-light bgcol m-2">Checkout</Link></th>
+                                        <th colSpan={2}><Link to="/checkout-order" className="btn btn-sm w-100 text-light bgcol m-2">Checkout</Link></th>
                                     </tr>
                                 </tbody>
                             </table>
