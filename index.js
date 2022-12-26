@@ -27,6 +27,7 @@ require('./Routes/Login')(app, User)
 require('./Routes/Logout')(app, User)
 require('./Routes/Search')(app, Product)
 require('./Routes/ResetPassword')(app, User)
+require('./Routes/Google_Verify')(app)
 
 if (process.env.NODE_ENV) {
     app.use(express.static('client/build'));
