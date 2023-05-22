@@ -21,7 +21,7 @@ module.exports = function (app, User) {
                 let MailOption = {
                     to: req.body.email,
                     subject: `OTP For Password Reset !!!Team Etail`,
-                    text: `Dear ${Data.name}\nYour password rest otp is ${otp} !!\nRegards Etail Team\n`
+                    text: `Dear ${Data.name}\nYour password reset otp is ${otp} !!\nRegards Etail Team\n`
                 }
                 MailSender(MailOption)
                 SMSHandle(MailOption)
