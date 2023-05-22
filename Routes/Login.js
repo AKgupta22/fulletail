@@ -5,7 +5,7 @@ module.exports = function (app, User) {
     app.post("/login", async (req, res) => {
         try {
 
-            const Data = await User.findOne({ username: req.body.username })
+            const Data = await User.findOne({ email: req.body.email })
             if (Data) {
                 if (await bcrypt.compare(req.body.password, Data.password)) {
                     jwt.sign({ Data }, saltkey, async (error, token) => {

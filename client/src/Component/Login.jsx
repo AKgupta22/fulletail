@@ -10,7 +10,7 @@ export default function Login() {
     const { UserLogin } = useContext(UserContext)
     const [spinner, setspinner] = useState(false)
     let [login, setlogin] = useState({
-        username: "",
+        email: "",
         password: ""
     })
     let Navigate = useNavigate()
@@ -28,7 +28,7 @@ export default function Login() {
         e.preventDefault()
         setspinner(true)
         let item = {
-            username: login.username,
+            email: login.email,
             password: login.password
         }
         let response = await UserLogin(item)
@@ -78,12 +78,12 @@ export default function Login() {
 
                         <TextField
                             onChange={Getdata}
-                            id="outlined-username-input"
-                            label="UserName*"
-                            type="text"
-                            autoComplete="current-username"
-                            placeholder="Enter your username"
-                            name="username"
+                            id="outlined-email-input"
+                            label="Email"
+                            type="email"
+                            autoComplete="current-email"
+                            placeholder="Enter your email"
+                            name="email"
                         />
                         <TextField
                             onChange={Getdata}
